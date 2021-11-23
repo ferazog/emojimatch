@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -24,13 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.guerrero.emojimatch.ui.theme.EmojiMatchTheme
+import com.guerrero.emojimatch.ui.theme.Orange
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             EmojiMatchTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     CardsScreen()
                 }
@@ -68,10 +66,9 @@ fun CardsScreen(
         Column(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            for (i in 1..1) {
+            for (i in 1..5) {
                 CardsRow(emojis = emojis)
             }
-
         }
     }
 }
@@ -83,7 +80,7 @@ fun CardsRow(emojis: ArrayList<String>) {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        for (i in 1..1) {
+        for (i in 1..4) {
             EmojiCard(emojis.removeAt(0))
         }
     }
@@ -109,7 +106,7 @@ fun EmojiCard(emoji: String) {
     )
 
     val animateColor by animateColorAsState(
-        targetValue = if (rotated) Color.Red else MaterialTheme.colors.surface,
+        targetValue = if (rotated) Color.White else Orange,
         animationSpec = tween(500)
     )
 
@@ -131,8 +128,7 @@ fun EmojiCard(emoji: String) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                //text = if (rotated) emoji else "",
-                text = emoji,
+                text = if (rotated) emoji else "",
                 textAlign = TextAlign.Center,
                 fontSize = 40.sp,
                 modifier = Modifier
@@ -151,20 +147,5 @@ fun EmojiCard(emoji: String) {
 fun DefaultPreview() {
     EmojiMatchTheme {
         CardsScreen()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview2() {
-    EmojiMatchTheme {
-        Surface(
-            color = MaterialTheme.colors.background,
-            modifier = Modifier
-                .border(BorderStroke(width = 2.dp, color = Color.Black))
-                .padding(32.dp)
-        ) {
-            EmojiCard(emoji = "😀")
-        }
     }
 }
