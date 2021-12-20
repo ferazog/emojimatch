@@ -4,35 +4,27 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.guerrero.emojimatch.model.EMOJI_LIST
 import com.guerrero.emojimatch.model.EmojiCard
-import com.guerrero.emojimatch.model.emojiList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class EmojisViewModel : ViewModel() {
 
     var emojis: MutableState<List<EmojiCard>> = mutableStateOf(
-        emojiList.shuffled()
+        EMOJI_LIST.shuffled()
     )
 
     var emojiCardSelected: EmojiCard? = null
 
     val isGameFinished: MutableState<Boolean> = mutableStateOf(false)
 
-    private var attempts: Float = 0f
-
-    private var successAttempts: Float = 0f
-
-    val successRate: MutableState<Float> = mutableStateOf(0f)
-
     fun onCardClicked(emojiCard: EmojiCard) {
         emojiCard.isRotated.value = true
         if (emojiCardSelected == null) {
             emojiCardSelected = emojiCard
         } else {
-            attempts += 1
             if (emojiCard.emoji == emojiCardSelected?.emoji) {
-                successAttempts += 1
                 emojiCardSelected?.match()
                 emojiCard.match()
                 checkGameIsFinished()
@@ -50,7 +42,6 @@ class EmojisViewModel : ViewModel() {
 
     private fun checkGameIsFinished() {
         if (!emojis.value.any { !it.isMatched }) {
-            successRate.value = (successAttempts / attempts) * 100f
             showGameFinished()
         }
     }
@@ -60,14 +51,11 @@ class EmojisViewModel : ViewModel() {
     }
 
     fun playAgain() {
-        attempts = 0f
-        successAttempts = 0f
-        successRate.value = 0f
         isGameFinished.value = false
-        emojiList.forEach {
+        EMOJI_LIST.forEach {
             it.isMatched = false
             it.isRotated.value = false
         }
-        emojis.value = emojiList.shuffled()
+        emojis.value = EMOJI_LIST.shuffled()
     }
 }

@@ -13,8 +13,7 @@ import com.guerrero.emojimatch.ui.theme.EmojiMatchTheme
 
 @Composable
 fun EmojiMatchBottomSheetComponent(
-    successRate: Float,
-    onShare: (score: String) -> Unit,
+    onShare: () -> Unit,
     onPlayAgain: () -> Unit
 ) {
     Column(
@@ -27,14 +26,14 @@ fun EmojiMatchBottomSheetComponent(
             text = "Congratulations! 👏",
             style = MaterialTheme.typography.h6
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(16.dp))
         Text(
-            text = "Success Rate: ${formatSuccessRate(successRate)}%",
+            text = "Do you like the game?",
             style = MaterialTheme.typography.body2
         )
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(8.dp))
         Button(
-            onClick = { onShare(formatSuccessRate(successRate)) },
+            onClick = { onShare() },
         ) {
             Icon(Icons.Filled.Share, contentDescription = "Share")
             Text(
@@ -42,7 +41,7 @@ fun EmojiMatchBottomSheetComponent(
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(16.dp))
         TextButton(
             onClick = onPlayAgain
         ) {
@@ -66,7 +65,7 @@ fun EmojiMatchComponentPreview() {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            EmojiMatchBottomSheetComponent(99.123f, {}, {})
+            EmojiMatchBottomSheetComponent({}, {})
         }
     }
 }

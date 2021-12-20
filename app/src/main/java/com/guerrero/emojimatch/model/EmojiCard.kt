@@ -14,7 +14,7 @@ data class EmojiCard(
     }
 }
 
-val emojiList = listOf(
+val EMOJI_LIST = listOf(
     EmojiCard("😀"),
     EmojiCard("😀"),
     EmojiCard("🍎"),

@@ -5,22 +5,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.guerrero.emojimatch.model.EMOJI_LIST
 import com.guerrero.emojimatch.model.EmojiCard
 import com.guerrero.emojimatch.ui.theme.EmojiMatchTheme
 import com.guerrero.emojimatch.viewmodel.EmojisViewModel
@@ -32,17 +31,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EmojiMatchTheme {
-                CardsScreen() { score ->
-                    shareMyScore(score)
+                CardsScreen {
+                    shareMyScore()
                 }
             }
         }
     }
 
-    private fun shareMyScore(score: String) {
+    private fun shareMyScore() {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "Try EmojiMatch app! It was my score: $score%")
+            putExtra(Intent.EXTRA_TEXT, "Try EmojiMatch app!")
             type = "text/plain"
         }
 
@@ -55,7 +54,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CardsScreen(
     viewModel: EmojisViewModel = viewModel(),
-    onShare: (score: String) -> Unit
+    onShare: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -63,9 +62,8 @@ fun CardsScreen(
     ModalBottomSheetLayout(
         sheetContent = {
             EmojiMatchBottomSheetComponent(
-                successRate = viewModel.successRate.value,
-                onShare = { score ->
-                    onShare(score)
+                onShare = {
+                    onShare()
                 },
                 onPlayAgain = {
                     scope.launch { modalBottomSheetState.hide() }
@@ -75,16 +73,59 @@ fun CardsScreen(
         },
         sheetState = modalBottomSheetState
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Grid(viewModel.emojis.value) { emojiCard ->
+        GridWithHeader(
+            emojiCards = viewModel.emojis.value,
+            onCardClick = { emojiCard ->
                 viewModel.onCardClicked(emojiCard)
                 if (viewModel.isGameFinished.value) {
                     scope.launch { modalBottomSheetState.show() }
                 }
+            },
+            onRestartClick = {
+                viewModel.playAgain()
             }
+        )
+    }
+}
+
+@Composable
+fun GridWithHeader(
+    emojiCards: List<EmojiCard>,
+    onCardClick: (EmojiCard) -> Unit,
+    onRestartClick: () -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        HeaderBox {
+            onRestartClick()
+        }
+        Grid(emojiCards) { emojiCard ->
+            onCardClick(emojiCard)
+        }
+    }
+}
+
+@Composable
+fun HeaderBox(
+    onRestartClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
+        IconButton(
+            onClick = {
+                onRestartClick()
+            },
+            modifier = Modifier.align(Alignment.CenterEnd)
+        ) {
+            Icon(
+                Icons.Filled.Refresh,
+                contentDescription = "Restart"
+            )
         }
     }
 }
@@ -105,4 +146,14 @@ fun Grid(
             }
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewHeaderBox() {
+    GridWithHeader(
+        EMOJI_LIST,
+        {},
+        {}
+    )
 }
