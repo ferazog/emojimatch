@@ -1,4 +1,4 @@
-package com.guerrero.emojimatch.ui
+package com.felipeerazog.emojimatch.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,10 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.guerrero.emojimatch.model.EMOJI_LIST
-import com.guerrero.emojimatch.model.EmojiCard
-import com.guerrero.emojimatch.ui.theme.EmojiMatchTheme
-import com.guerrero.emojimatch.viewmodel.EmojisViewModel
+import com.felipeerazog.emojimatch.model.EMOJI_LIST
+import com.felipeerazog.emojimatch.model.EmojiCard
+import com.felipeerazog.emojimatch.ui.theme.EmojiMatchTheme
+import com.felipeerazog.emojimatch.viewmodel.EmojisViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package com.guerrero.emojimatch
+package com.felipeerazog.emojimatch
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

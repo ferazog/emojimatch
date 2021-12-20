@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guerrero.emojimatch">
+    package="com.felipeerazog.emojimatch">
 
     <application
         android:allowBackup="true"
@@ -10,13 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EmojiMatch">
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.felipeerazog.emojimatch.ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.EmojiMatch.NoActionBar" />
 
         <activity
-            android:name=".ui.SplashScreenActivity"
+            android:name="com.felipeerazog.emojimatch.ui.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>

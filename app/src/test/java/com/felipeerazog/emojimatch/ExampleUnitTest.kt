@@ -1,4 +1,4 @@
-package com.guerrero.emojimatch
+package com.felipeerazog.emojimatch
 
 import org.junit.Test
 

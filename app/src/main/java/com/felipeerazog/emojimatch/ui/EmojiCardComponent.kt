@@ -1,4 +1,4 @@
-package com.guerrero.emojimatch.ui
+package com.felipeerazog.emojimatch.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -19,9 +19,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.guerrero.emojimatch.model.EmojiCard
-import com.guerrero.emojimatch.ui.theme.EmojiMatchTheme
-import com.guerrero.emojimatch.ui.theme.Orange
+import com.felipeerazog.emojimatch.model.EmojiCard
+import com.felipeerazog.emojimatch.ui.theme.EmojiMatchTheme
+import com.felipeerazog.emojimatch.ui.theme.Orange
 
 @Composable
 fun EmojiCardComponent(emojiCard: EmojiCard, onRotate: () -> Unit) {

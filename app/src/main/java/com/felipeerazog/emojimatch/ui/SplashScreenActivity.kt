@@ -1,4 +1,4 @@
-package com.guerrero.emojimatch.ui
+package com.felipeerazog.emojimatch.ui
 
 import android.content.Intent
 import android.os.Bundle

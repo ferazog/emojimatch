@@ -1,11 +1,11 @@
-package com.guerrero.emojimatch.viewmodel
+package com.felipeerazog.emojimatch.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.guerrero.emojimatch.model.EMOJI_LIST
-import com.guerrero.emojimatch.model.EmojiCard
+import com.felipeerazog.emojimatch.model.EMOJI_LIST
+import com.felipeerazog.emojimatch.model.EmojiCard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
