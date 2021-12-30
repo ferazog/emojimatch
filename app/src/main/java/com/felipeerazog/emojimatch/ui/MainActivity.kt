@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     private fun shareMyScore() {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "Try EmojiMatch app!")
+            putExtra(Intent.EXTRA_TEXT, "Try EmojiMatch game! https://play.google.com/store/apps/details?id=com.guerrero.emojimatch")
             type = "text/plain"
         }
 
@@ -86,74 +86,4 @@ fun CardsScreen(
             }
         )
     }
-}
-
-@Composable
-fun GridWithHeader(
-    emojiCards: List<EmojiCard>,
-    onCardClick: (EmojiCard) -> Unit,
-    onRestartClick: () -> Unit
-) {
-    Column(
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        HeaderBox {
-            onRestartClick()
-        }
-        Grid(emojiCards) { emojiCard ->
-            onCardClick(emojiCard)
-        }
-    }
-}
-
-@Composable
-fun HeaderBox(
-    onRestartClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-    ) {
-        IconButton(
-            onClick = {
-                onRestartClick()
-            },
-            modifier = Modifier.align(Alignment.CenterEnd)
-        ) {
-            Icon(
-                Icons.Filled.Refresh,
-                contentDescription = "Restart"
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun Grid(
-    emojiCards: List<EmojiCard>,
-    onCardClick: (EmojiCard) -> Unit
-) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(count = 4),
-        contentPadding = PaddingValues(8.dp),
-    ) {
-        items(emojiCards) { emojiCard ->
-            EmojiCardComponent(emojiCard = emojiCard) {
-                onCardClick(emojiCard)
-            }
-        }
-    }
-}
-
-@Composable
-@Preview
-fun PreviewHeaderBox() {
-    GridWithHeader(
-        EMOJI_LIST,
-        {},
-        {}
-    )
 }
