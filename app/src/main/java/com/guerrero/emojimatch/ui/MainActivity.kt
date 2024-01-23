@@ -1,37 +1,33 @@
-package com.felipeerazog.emojimatch.ui
+package com.guerrero.emojimatch.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
+import androidx.activity.viewModels
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.felipeerazog.emojimatch.model.EMOJI_LIST
-import com.felipeerazog.emojimatch.model.EmojiCard
-import com.felipeerazog.emojimatch.ui.theme.EmojiMatchTheme
-import com.felipeerazog.emojimatch.viewmodel.EmojisViewModel
+import com.guerrero.emojimatch.ui.theme.EmojiMatchTheme
+import com.guerrero.emojimatch.viewmodel.EmojisViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
+    private lateinit var splashScreen: SplashScreen
+
+    private val viewModel: EmojisViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+       // splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
         setContent {
             EmojiMatchTheme {
-                CardsScreen {
+                CardsScreen(viewModel) {
+
                     shareMyScore()
                 }
             }
@@ -41,7 +37,10 @@ class MainActivity : ComponentActivity() {
     private fun shareMyScore() {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "Try EmojiMatch game! https://play.google.com/store/apps/details?id=com.guerrero.emojimatch")
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Try EmojiMatch game! https://play.google.com/store/apps/details?id=com.guerrero.emojimatch"
+            )
             type = "text/plain"
         }
 
@@ -50,15 +49,38 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardsScreen(
-    viewModel: EmojisViewModel = viewModel(),
+    viewModel: EmojisViewModel,
     onShare: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val modalBottomSheetState = rememberModalBottomSheetState()
 
+    GridWithHeader(
+        emojiCards = viewModel.emojis.value,
+        onCardClick = { emojiCard ->
+            viewModel.onCardClicked(emojiCard)
+            if (viewModel.isGameFinished.value) {
+                scope.launch { modalBottomSheetState.show() }
+            }
+        },
+        onRestartClick = {
+            viewModel.playAgain()
+        }
+    )
+    /*
+    EmojiMatchBottomSheetComponent(
+        onShare = {
+            onShare()
+        },
+        onPlayAgain = {
+            scope.launch { modalBottomSheetState.hide() }
+            viewModel.playAgain()
+        }
+    )*/
+/*
     ModalBottomSheetLayout(
         sheetContent = {
             EmojiMatchBottomSheetComponent(
@@ -85,5 +107,5 @@ fun CardsScreen(
                 viewModel.playAgain()
             }
         )
-    }
+    }*/
 }
