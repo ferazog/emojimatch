@@ -1,27 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.EmojiMatch" parent="Theme.MaterialComponents.DayNight">
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
-        <!-- Customize your theme here. -->
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    <style name="Theme.EmojiMatch" parent="android:Theme.Material.Light.NoActionBar">
+
     </style>
 
-    <style name="Theme.EmojiMatch.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 
-    <style name="Theme.EmojiMatch.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.EmojiMatch.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
-        <item name="colorPrimary">@color/orange</item>
-        <item name="android:statusBarColor">@color/white</item>
-    </style>
 
 </resources>

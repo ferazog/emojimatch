@@ -1,5 +1,5 @@
 
-![](https://github.com/felipeerazog/emojimatch/blob/master/readme_cover.jpeg?raw=true)
+![](https://github.com/ferazog/emojimatch/blob/master/readme_cover.jpeg?raw=true)
 
 # EmojiMatch 😀
 The classic memory game with Emojis.
