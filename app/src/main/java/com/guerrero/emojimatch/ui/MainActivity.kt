@@ -2,17 +2,11 @@ package com.guerrero.emojimatch.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import com.guerrero.emojimatch.ui.theme.EmojiMatchTheme
 import com.guerrero.emojimatch.viewmodel.EmojisViewModel
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
