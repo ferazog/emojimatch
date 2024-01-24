@@ -16,18 +16,14 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var splashScreen: SplashScreen
-
     private val viewModel: EmojisViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-       // splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         setContent {
             EmojiMatchTheme {
                 CardsScreen(viewModel) {
-
                     shareMyScore()
                 }
             }
@@ -47,65 +43,4 @@ class MainActivity : ComponentActivity() {
         val shareIntent = Intent.createChooser(sendIntent, null)
         startActivity(shareIntent)
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CardsScreen(
-    viewModel: EmojisViewModel,
-    onShare: () -> Unit
-) {
-    val scope = rememberCoroutineScope()
-    val modalBottomSheetState = rememberModalBottomSheetState()
-
-    GridWithHeader(
-        emojiCards = viewModel.emojis.value,
-        onCardClick = { emojiCard ->
-            viewModel.onCardClicked(emojiCard)
-            if (viewModel.isGameFinished.value) {
-                scope.launch { modalBottomSheetState.show() }
-            }
-        },
-        onRestartClick = {
-            viewModel.playAgain()
-        }
-    )
-    /*
-    EmojiMatchBottomSheetComponent(
-        onShare = {
-            onShare()
-        },
-        onPlayAgain = {
-            scope.launch { modalBottomSheetState.hide() }
-            viewModel.playAgain()
-        }
-    )*/
-/*
-    ModalBottomSheetLayout(
-        sheetContent = {
-            EmojiMatchBottomSheetComponent(
-                onShare = {
-                    onShare()
-                },
-                onPlayAgain = {
-                    scope.launch { modalBottomSheetState.hide() }
-                    viewModel.playAgain()
-                }
-            )
-        },
-        sheetState = modalBottomSheetState
-    ) {
-        GridWithHeader(
-            emojiCards = viewModel.emojis.value,
-            onCardClick = { emojiCard ->
-                viewModel.onCardClicked(emojiCard)
-                if (viewModel.isGameFinished.value) {
-                    scope.launch { modalBottomSheetState.show() }
-                }
-            },
-            onRestartClick = {
-                viewModel.playAgain()
-            }
-        )
-    }*/
 }

@@ -14,9 +14,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.guerrero.emojimatch.ui.theme.Orange
-import com.guerrero.emojimatch.ui.theme.Purple700
-import com.guerrero.emojimatch.ui.theme.Teal200
 
 private val DarkColorScheme = darkColorScheme(
     primary = Orange,
