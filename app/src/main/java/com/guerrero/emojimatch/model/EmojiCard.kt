@@ -1,4 +1,4 @@
-package com.felipeerazog.emojimatch.model
+package com.guerrero.emojimatch.model
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

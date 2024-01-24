@@ -1,11 +1,11 @@
-package com.felipeerazog.emojimatch.viewmodel
+package com.guerrero.emojimatch.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.felipeerazog.emojimatch.model.EMOJI_LIST
-import com.felipeerazog.emojimatch.model.EmojiCard
+import com.guerrero.emojimatch.model.EMOJI_LIST
+import com.guerrero.emojimatch.model.EmojiCard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -15,11 +15,23 @@ class EmojisViewModel : ViewModel() {
         EMOJI_LIST.shuffled()
     )
 
-    var emojiCardSelected: EmojiCard? = null
+    private var emojiCardSelected: EmojiCard? = null
 
     val isGameFinished: MutableState<Boolean> = mutableStateOf(false)
 
+    private var flag = true
+
     fun onCardClicked(emojiCard: EmojiCard) {
+        if (flag) {
+            viewModelScope.launch {
+                flag = false
+                rotateCard(emojiCard)
+                flag = true
+            }
+        }
+    }
+
+    private suspend fun rotateCard(emojiCard: EmojiCard) {
         emojiCard.isRotated.value = true
         if (emojiCardSelected == null) {
             emojiCardSelected = emojiCard
@@ -30,12 +42,10 @@ class EmojisViewModel : ViewModel() {
                 checkGameIsFinished()
                 emojiCardSelected = null
             } else {
-                viewModelScope.launch {
-                    delay(500)
-                    emojiCardSelected?.isRotated?.value = false
-                    emojiCard.isRotated.value = false
-                    emojiCardSelected = null
-                }
+                delay(500)
+                emojiCardSelected?.isRotated?.value = false
+                emojiCard.isRotated.value = false
+                emojiCardSelected = null
             }
         }
     }
