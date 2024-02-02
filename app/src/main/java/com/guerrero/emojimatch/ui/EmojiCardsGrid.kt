@@ -21,12 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.guerrero.emojimatch.model.EMOJI_LIST
 import com.guerrero.emojimatch.model.EmojiCard
+import com.guerrero.emojimatch.model.LEVELS
+import com.guerrero.emojimatch.model.Level
 
 @Composable
 fun GridWithHeader(
-    emojiCards: List<EmojiCard>,
+    level: Level,
     onCardClick: (EmojiCard) -> Unit,
     onRestartClick: () -> Unit
 ) {
@@ -34,10 +35,11 @@ fun GridWithHeader(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.fillMaxSize()
     ) {
-        HeaderBox {
-            onRestartClick()
-        }
-        Grid(emojiCards) { emojiCard ->
+        HeaderBox(
+            title = level.title,
+            onRestartClick = { onRestartClick() }
+        )
+        Grid(level.emojis) { emojiCard ->
             onCardClick(emojiCard)
         }
     }
@@ -45,6 +47,7 @@ fun GridWithHeader(
 
 @Composable
 fun HeaderBox(
+    title: String,
     onRestartClick: () -> Unit
 ) {
     Box(
@@ -54,7 +57,7 @@ fun HeaderBox(
             .height(64.dp)
     ) {
         Text(
-            text = "Level 1",
+            text = title,
             modifier = Modifier
                 .align(Alignment.Center),
             textAlign = TextAlign.Center
@@ -94,7 +97,7 @@ fun Grid(
 @Preview
 fun PreviewHeaderBox() {
     GridWithHeader(
-        emojiCards = EMOJI_LIST,
+        level = LEVELS[0],
         onCardClick = {},
         onRestartClick = {}
     )

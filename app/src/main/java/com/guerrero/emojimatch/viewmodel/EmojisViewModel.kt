@@ -1,32 +1,40 @@
 package com.guerrero.emojimatch.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.guerrero.emojimatch.model.EMOJI_LIST
 import com.guerrero.emojimatch.model.EmojiCard
+import com.guerrero.emojimatch.model.LEVELS
+import com.guerrero.emojimatch.model.Level
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+
+data class GameState(
+    val loading: Boolean = true,
+    val level: Level = Level(-1, "", false, emptyList()),
+    val isLevelCompleted: Boolean = false
+)
 
 class EmojisViewModel : ViewModel() {
 
-    var emojis: MutableState<List<EmojiCard>> = mutableStateOf(
-        EMOJI_LIST.shuffled()
-    )
+    private val _gameState = MutableStateFlow(GameState())
+
+    val gameState: StateFlow<GameState> = _gameState.asStateFlow()
 
     private var emojiCardSelected: EmojiCard? = null
 
-    val isGameFinished: MutableState<Boolean> = mutableStateOf(false)
-
-    private var flag = true
+    private var blockMultitouchFlag = true
 
     fun onCardClicked(emojiCard: EmojiCard) {
-        if (flag) {
+        if (blockMultitouchFlag) {
             viewModelScope.launch {
-                flag = false
+                blockMultitouchFlag = false
                 rotateCard(emojiCard)
-                flag = true
+                blockMultitouchFlag = true
             }
         }
     }
@@ -51,21 +59,43 @@ class EmojisViewModel : ViewModel() {
     }
 
     private fun checkGameIsFinished() {
-        if (!emojis.value.any { !it.isMatched }) {
-            showGameFinished()
+        viewModelScope.launch {
+            val emojis = gameState.value.level.emojis
+            if (!emojis.any { !it.isMatched }) {
+                _gameState.update { state ->
+                    state.copy(isLevelCompleted = true)
+                }
+            }
         }
-    }
-
-    private fun showGameFinished() {
-        isGameFinished.value = true
     }
 
     fun playAgain() {
-        isGameFinished.value = false
-        EMOJI_LIST.forEach {
-            it.isMatched = false
-            it.isRotated.value = false
+        viewModelScope.launch {
+            val emojis = gameState.value.level.emojis.map {
+                it.copy(
+                    isMatched = false,
+                    isRotated = mutableStateOf(false)
+                )
+            }.shuffled()
+
+            _gameState.update { state ->
+                state.copy(
+                    isLevelCompleted = false,
+                    level = state.level.copy(emojis = emojis),
+
+                    )
+            }
         }
-        emojis.value = EMOJI_LIST.shuffled()
+    }
+
+    fun loadLevel(levelId: Int) {
+        viewModelScope.launch {
+            _gameState.update { state ->
+                state.copy(
+                    loading = false,
+                    level = LEVELS.first { it.id == levelId }
+                )
+            }
+        }
     }
 }

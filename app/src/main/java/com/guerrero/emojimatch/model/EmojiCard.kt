@@ -13,26 +13,3 @@ data class EmojiCard(
         isMatched = true
     }
 }
-
-val EMOJI_LIST = listOf(
-    EmojiCard("😀"),
-    EmojiCard("😀"),
-    EmojiCard("🍎"),
-    EmojiCard("🍎"),
-    EmojiCard("⚽️"),
-    EmojiCard("🐶"),
-    EmojiCard("🚙"),
-    EmojiCard("🖨"),
-    EmojiCard("💚"),
-    EmojiCard("🎉"),
-    EmojiCard("👏"),
-    EmojiCard("💃"),
-    EmojiCard("🐶"),
-    EmojiCard("⚽️"),
-    EmojiCard("🚙"),
-    EmojiCard("🖨"),
-    EmojiCard("💚"),
-    EmojiCard("🎉"),
-    EmojiCard("👏"),
-    EmojiCard("💃")
-)
