@@ -15,3 +15,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Emoji Match"
 include(":app")
+include(":database")
+include(":data:level")
+include(":feature:game")
+include(":data:preferences")

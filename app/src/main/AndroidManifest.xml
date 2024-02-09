@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".EmojiMatchApplication"
         android:theme="@style/Theme.EmojiMatch">
         <activity
             android:name="com.guerrero.emojimatch.ui.MainActivity"
