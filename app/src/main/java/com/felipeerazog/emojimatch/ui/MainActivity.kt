@@ -4,34 +4,29 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
+import androidx.activity.viewModels
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.felipeerazog.emojimatch.model.EMOJI_LIST
-import com.felipeerazog.emojimatch.model.EmojiCard
+import androidx.compose.runtime.setValue
 import com.felipeerazog.emojimatch.ui.theme.EmojiMatchTheme
 import com.felipeerazog.emojimatch.viewmodel.EmojisViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
+    val viewModel: EmojisViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             EmojiMatchTheme {
-                CardsScreen {
+                CardsScreen(viewModel) {
                     shareMyScore()
                 }
             }
@@ -41,7 +36,10 @@ class MainActivity : ComponentActivity() {
     private fun shareMyScore() {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "Try EmojiMatch game! https://play.google.com/store/apps/details?id=com.guerrero.emojimatch")
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Try EmojiMatch game! https://play.google.com/store/apps/details?id=com.guerrero.emojimatch"
+            )
             type = "text/plain"
         }
 
@@ -50,40 +48,42 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardsScreen(
-    viewModel: EmojisViewModel = viewModel(),
+    viewModel: EmojisViewModel,
     onShare: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
-    ModalBottomSheetLayout(
-        sheetContent = {
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = sheetState
+        ) {
             EmojiMatchBottomSheetComponent(
                 onShare = {
                     onShare()
                 },
                 onPlayAgain = {
-                    scope.launch { modalBottomSheetState.hide() }
+                    scope.launch { showBottomSheet = false }
                     viewModel.playAgain()
                 }
             )
-        },
-        sheetState = modalBottomSheetState
-    ) {
-        GridWithHeader(
-            emojiCards = viewModel.emojis.value,
-            onCardClick = { emojiCard ->
-                viewModel.onCardClicked(emojiCard)
-                if (viewModel.isGameFinished.value) {
-                    scope.launch { modalBottomSheetState.show() }
-                }
-            },
-            onRestartClick = {
-                viewModel.playAgain()
-            }
-        )
+        }
     }
+    GridWithHeader(
+        emojiCards = viewModel.emojis.value,
+        onCardClick = { emojiCard ->
+            viewModel.onCardClicked(emojiCard)
+            if (viewModel.isGameFinished.value) {
+                scope.launch { showBottomSheet = true }
+            }
+        },
+        onRestartClick = {
+            viewModel.playAgain()
+        }
+    )
 }
