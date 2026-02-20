@@ -4,10 +4,11 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,11 +48,10 @@ fun EmojiCardComponent(emojiCard: EmojiCard, onRotate: () -> Unit) {
     )
 
     Card(
-        elevation = 8.dp,
         border = BorderStroke(width = 1.dp, color = Color.Black),
-        backgroundColor = animateColor,
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 8.dp)
+            .background(color = animateColor)
             .clickable {
                 if (!isRotated) {
                     onRotate()
