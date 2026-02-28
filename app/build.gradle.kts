@@ -15,8 +15,8 @@ android {
         applicationId = "com.guerrero.emojimatch"
         minSdk = 24
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.1"
+        versionCode = 4
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,7 +59,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    implementation(libs.androidx.core.splashscreen)
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 }

@@ -24,13 +24,14 @@ import com.felipeerazog.emojimatch.model.EmojiCard
 
 @Composable
 fun GridWithHeader(
+    modifier: Modifier = Modifier,
     emojiCards: List<EmojiCard>,
     onCardClick: (EmojiCard) -> Unit,
     onRestartClick: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Top,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         HeaderBox {
             onRestartClick()
@@ -72,6 +73,8 @@ fun Grid(
     LazyVerticalGrid(
         columns = GridCells.Fixed(4),
         contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier.fillMaxSize()
     ) {
         items(emojiCards) { emojiCard ->
             EmojiCardComponent(emojiCard = emojiCard) {
@@ -85,8 +88,8 @@ fun Grid(
 @Preview
 fun PreviewHeaderBox() {
     GridWithHeader(
-        EMOJI_LIST,
-        {},
-        {}
+        emojiCards = EMOJI_LIST,
+        onCardClick = {},
+        onRestartClick = {}
     )
 }

@@ -4,15 +4,19 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -48,10 +52,13 @@ fun EmojiCardComponent(emojiCard: EmojiCard, onRotate: () -> Unit) {
     )
 
     Card(
+        colors = CardDefaults.cardColors().copy(
+            containerColor = animateColor,
+        ),
         border = BorderStroke(width = 1.dp, color = Color.Black),
         modifier = Modifier
+            .aspectRatio(0.75f)
             .padding(vertical = 8.dp, horizontal = 8.dp)
-            .background(color = animateColor)
             .clickable {
                 if (!isRotated) {
                     onRotate()
@@ -63,17 +70,21 @@ fun EmojiCardComponent(emojiCard: EmojiCard, onRotate: () -> Unit) {
                 this.transformOrigin
             }
     ) {
-        Text(
-            text = if (isRotated) emojiCard.emoji else "",
-            fontSize = 32.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(vertical = 32.dp)
-                .graphicsLayer {
-                    alpha = if (isRotated) animateBack else animateFront
-                    rotationY = rotation
-                }
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = if (isRotated) emojiCard.emoji else "",
+                fontSize = 32.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .graphicsLayer {
+                        alpha = if (isRotated) animateBack else animateFront
+                        rotationY = rotation
+                    }
+            )
+        }
     }
 }
 
